@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+logging:
+  level:
+    root: debug
+
 spring:
   #database settings
   datasource:
@@ -26,3 +30,4 @@ spring:
         format_sql: true
         default_batch_fetch_size: 10
     open-in-view: false
+

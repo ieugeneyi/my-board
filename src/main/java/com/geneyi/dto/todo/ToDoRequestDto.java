@@ -1,22 +1,30 @@
 package com.geneyi.dto.todo;
 
 import com.geneyi.domain.todo.ToDo;
-import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ToDoRequestDto {
 
-    @NotBlank(message = "CONTENT_IS_MANDATORY")
     private String content;
+    private boolean completed;
 
-    public ToDoRequestDto(String content) {
+    @Builder
+    public ToDoRequestDto(String content, boolean completed) {
         this.content = content;
+        this.completed = completed;
     }
 
     public ToDo toEntity(){
         return ToDo.builder()
               .content(content)
               .build();
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

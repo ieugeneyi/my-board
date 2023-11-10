@@ -4,12 +4,14 @@ import com.geneyi.dto.todo.ToDoRequestDto;
 import com.geneyi.dto.todo.ToDoResponseDto;
 import com.geneyi.service.ToDoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/todos")
 @RestController
@@ -34,7 +36,7 @@ public class ToDoController {
     }
 
     @PostMapping("/{id}/complete")
-    public void complete(@RequestBody boolean isComplete, @PathVariable Long id){
-        toDoService.checkComplete(isComplete, id);
+    public void complete(@Validated  @RequestBody ToDoRequestDto requestDto, @PathVariable Long id){
+        toDoService.checkComplete(requestDto.isCompleted(), id);
     }
 }

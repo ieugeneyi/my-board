@@ -27,17 +27,11 @@ public class ToDoService {
     public void checkComplete(boolean isComplete, Long id){
         ToDo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("todo not exists id=" + id));
         todo.setCompleted(isComplete);
-        todoRepository.save(todo);
     }
 
     public void delete(Long id){
         ToDo toDo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("todo not exists id=" + id));
         todoRepository.delete(toDo);
     }
-
-
-
-
-
 
 }
