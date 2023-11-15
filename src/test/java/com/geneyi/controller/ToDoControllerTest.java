@@ -1,6 +1,8 @@
 package com.geneyi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.geneyi.domain.todo.Category;
+import com.geneyi.domain.todo.CategoryRepository;
 import com.geneyi.domain.todo.ToDo;
 import com.geneyi.domain.todo.ToDoRepository;
 import com.geneyi.dto.todo.ToDoRequestDto;
@@ -38,6 +40,8 @@ class ToDoControllerTest {
     private ToDoService toDoService;
     @Autowired
     private ToDoRepository toDoRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Transactional
     @Test
@@ -64,8 +68,16 @@ class ToDoControllerTest {
     @Test
     public void ToDo_check() throws Exception{
         //given
+        Category category = Category.builder()
+                .name("category")
+                .build();
+        categoryRepository.save(category);
+        System.out.println("================================================");
+        System.out.println(objectMapper.writeValueAsString(category));
+        System.out.println("================================================");
         String content = "test";
         ToDoRequestDto toDoRequestDto = ToDoRequestDto.builder()
+                .category(category)
                 .content(content).build();
         Long saved = toDoService.save(toDoRequestDto);
         toDoRequestDto.setCompleted(true);
@@ -87,6 +99,7 @@ class ToDoControllerTest {
         assertThat(toDo.getCompleted()).isEqualTo(true);
 
         System.out.println("================================================");
+        System.out.println(objectMapper.writeValueAsString(toDo));
         System.out.println(toDo.getCompleted());
         System.out.println("================================================");
 

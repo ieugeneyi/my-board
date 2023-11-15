@@ -39,4 +39,9 @@ public class ToDoController {
     public void complete(@Validated  @RequestBody ToDoRequestDto requestDto, @PathVariable Long id){
         toDoService.checkComplete(requestDto.isCompleted(), id);
     }
+
+    @PostMapping("/sort")
+    public void sort(@RequestBody List<ToDoRequestDto> dtoList){
+        toDoService.saveSort(dtoList);
+    }
 }

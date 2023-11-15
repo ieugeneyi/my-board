@@ -20,7 +20,11 @@ public class ToDoService {
     }
 
     public List<ToDoResponseDto> findAll(){
-        return todoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))
+        return todoRepository.findAll(
+                Sort.by(
+                        Sort.Order.asc("sort"),
+                        Sort.Order.desc("id")
+                ))
                 .stream().map(ToDoResponseDto::new).toList();
     }
 
@@ -32,6 +36,10 @@ public class ToDoService {
     public void delete(Long id){
         ToDo toDo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("todo not exists id=" + id));
         todoRepository.delete(toDo);
+    }
+
+    public void saveSort(List<ToDoRequestDto> dtoList){
+        dtoList.forEach(todo -> todoRepository.save(todo.toEntity()));
     }
 
 }
