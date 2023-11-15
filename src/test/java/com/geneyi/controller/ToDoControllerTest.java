@@ -9,14 +9,26 @@ import com.geneyi.dto.todo.ToDoRequestDto;
 import com.geneyi.dto.todo.ToDoResponseDto;
 import com.geneyi.service.ToDoService;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
+import org.springframework.web.context.WebApplicationContext;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 
 import java.util.List;
 
@@ -44,6 +56,7 @@ class ToDoControllerTest {
     private CategoryRepository categoryRepository;
 
     @Transactional
+    @WithMockUser
     @Test
     public void ToDo_등록() throws Exception{
         //given
@@ -56,6 +69,7 @@ class ToDoControllerTest {
                 MockMvcRequestBuilders.post("http://localhost:" + port + "/api/v1/todos")
                       .contentType(MediaType.APPLICATION_JSON)
                       .content(objectMapper.writeValueAsString(toDoRequestDto))
+                      .with(csrf())
         ).andExpect(status().isOk());
 
 
@@ -65,6 +79,7 @@ class ToDoControllerTest {
     }
 
     @Transactional
+    @WithMockUser
     @Test
     public void ToDo_check() throws Exception{
         //given
@@ -91,6 +106,7 @@ class ToDoControllerTest {
                 MockMvcRequestBuilders.post("http://localhost:" + port + "/api/v1/todos/" + saved + "/complete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(toDoRequestDto))
+                        .with(csrf())
         ).andExpect(status().isOk());
 
         //then
