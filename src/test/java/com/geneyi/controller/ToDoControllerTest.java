@@ -1,6 +1,7 @@
 package com.geneyi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.geneyi.domain.member.Role;
 import com.geneyi.domain.todo.Category;
 import com.geneyi.domain.todo.CategoryRepository;
 import com.geneyi.domain.todo.ToDo;

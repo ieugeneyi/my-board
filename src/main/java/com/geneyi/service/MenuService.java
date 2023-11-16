@@ -65,9 +65,10 @@ public class MenuService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void addMenu(MenuRequestDto dto){
+    public Long addMenu(MenuRequestDto dto){
         Menu menu = new Menu(dto);
         menuRepository.save(menu);
+        return menu.getId();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -75,7 +76,6 @@ public class MenuService {
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new IllegalArgumentException("menu not found"));
         menu.update(dto);
-        menuRepository.save(menu);
     }
 
     @Transactional(rollbackFor = Exception.class)

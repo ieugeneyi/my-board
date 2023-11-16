@@ -18,6 +18,7 @@ import java.util.List;
 public class Menu extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
     private Long id;
 
