@@ -1,7 +1,6 @@
 package com.geneyi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.geneyi.domain.member.Role;
 import com.geneyi.domain.todo.Category;
 import com.geneyi.domain.todo.CategoryRepository;
 import com.geneyi.domain.todo.ToDo;
@@ -18,22 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
-import org.springframework.web.context.WebApplicationContext;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -55,6 +45,11 @@ class ToDoControllerTest {
     private ToDoRepository toDoRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        toDoRepository.deleteAll();
+    }
 
     @Transactional
     @WithMockUser

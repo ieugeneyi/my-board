@@ -5,6 +5,7 @@ import com.geneyi.dto.todo.ToDoResponseDto;
 import com.geneyi.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/todos")
 @RestController
-public class ToDoController {
+public class ToDoApiController {
 
     private final ToDoService toDoService;
 
@@ -25,23 +26,28 @@ public class ToDoController {
     }
 
     @PostMapping
-    public Long save(@Validated  @RequestBody ToDoRequestDto requestDto,
-                     BindingResult bindingResult){
-        return toDoService.save(requestDto);
+    public ResponseEntity<String> save(@Validated  @RequestBody ToDoRequestDto requestDto,
+                               BindingResult bindingResult){
+        toDoService.save(requestDto);
+        return ResponseEntity.ok("saved");
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity<String> delete(@PathVariable Long id){
         toDoService.delete(id);
+        return ResponseEntity.ok("deleted");
     }
 
     @PostMapping("/{id}/complete")
-    public void complete(@Validated  @RequestBody ToDoRequestDto requestDto, @PathVariable Long id){
+    public ResponseEntity<String> complete(@Validated  @RequestBody ToDoRequestDto requestDto, @PathVariable Long id){
+        log.info(String.valueOf(requestDto.isCompleted()));
         toDoService.checkComplete(requestDto.isCompleted(), id);
+        return ResponseEntity.ok("complete");
     }
 
     @PostMapping("/sort")
-    public void sort(@RequestBody List<ToDoRequestDto> dtoList){
+    public ResponseEntity<String> sort(@RequestBody List<ToDoRequestDto> dtoList){
         toDoService.saveSort(dtoList);
+        return ResponseEntity.ok("sort saved");
     }
 }

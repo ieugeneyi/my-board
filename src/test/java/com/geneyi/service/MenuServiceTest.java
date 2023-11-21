@@ -3,12 +3,13 @@ package com.geneyi.service;
 import com.geneyi.domain.menu.Menu;
 import com.geneyi.domain.menu.MenuRepository;
 import com.geneyi.dto.menu.MenuRequestDto;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class MenuServiceTest {
@@ -17,6 +18,11 @@ class MenuServiceTest {
 
     @Autowired
     private MenuRepository menuRepository;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        menuRepository.deleteAll();
+    }
 
     @Transactional
     @Test
@@ -43,7 +49,7 @@ class MenuServiceTest {
         //then
         Menu parentMenu = menuRepository.findById(parent.getId()).orElse(null);
         assert parentMenu != null;
-        Assertions.assertThat(parentMenu.getId()).isEqualTo(menu.getParent().getId());
+        assertThat(parentMenu.getId()).isEqualTo(menu.getParent().getId());
 
     }
 
@@ -51,6 +57,20 @@ class MenuServiceTest {
     @Test
     public void menu_edit() throws Exception {
         //given
+        MenuRequestDto menu = MenuRequestDto.builder()
+                .name("menu")
+                .url("/menu")
+                .build();
+        Long addedMenu = menuService.addMenu(menu);
+
+        //when
+        Menu menu1 = menuRepository.findById(addedMenu).orElse(null);
+        menu.setName("menu111");
+        assert menu1 != null;
+        menuService.editMenu(menu1.getId(), menu);
+
+        //then
+        assertThat(menu1.getName()).isEqualTo("menu111");
 
     }
 }

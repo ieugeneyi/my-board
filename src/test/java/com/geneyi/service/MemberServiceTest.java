@@ -3,6 +3,7 @@ package com.geneyi.service;
 import com.geneyi.domain.member.Member;
 import com.geneyi.domain.member.MemberRepository;
 import com.geneyi.dto.member.MemberRequestDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,11 @@ class MemberServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @BeforeEach
+    public void setUp(){
+        memberRepository.deleteAll();
+    }
 
     @Transactional
     @Test

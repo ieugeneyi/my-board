@@ -24,12 +24,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filter(HttpSecurity http) throws Exception {
         http
-//                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) ->
                         auth
                             .requestMatchers(antMatcher("/login")).permitAll()
                             .requestMatchers(antMatcher("/api/**/menus/**")).hasRole(Role.ADMIN.getRole())
-//                            .requestMatchers(antMatcher("/api/v1/todos/**")).hasRole(Role.USER.getKey())
+                            .requestMatchers(antMatcher("/api/**/todos/**")).hasRole(Role.USER.getRole())
                             .anyRequest().authenticated())
                 .formLogin(
                         login -> login.loginPage("/login")
